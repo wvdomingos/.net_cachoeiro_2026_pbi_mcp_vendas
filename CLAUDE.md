@@ -20,8 +20,9 @@ docs/                                                     # vazio
 ```
 
 Não há build, lint ou testes. O ciclo é: editar TMDL/PBIR → abrir o `.pbip` no Power BI Desktop →
-atualizar. O diretório **não é um repositório git** (apesar de existir `dashboards/.gitignore`, que
-exclui `.pbi/localSettings.json` e `.pbi/cache.abf`).
+atualizar. Repositório git em `main`, remoto `origin` =
+`https://github.com/wvdomingos/.net_cachoeiro_2026_pbi_mcp_vendas.git` (público). O `.gitignore`
+da raiz exclui `.pbi/localSettings.json`, `.pbi/cache.abf` e `.obsidian/workspace.json`.
 
 ## Estado atual
 
