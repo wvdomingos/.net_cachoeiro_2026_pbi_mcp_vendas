@@ -1,14 +1,177 @@
 table Medidas
 	lineageTag: bc5a0d18-53a9-42ca-ba07-59354dc4292e
 
+	/// Texto 'Atualização: <data e hora>' da última atualização do modelo, em horário de Brasília (tabela Atualizacao).
 	measure txtAtualizacao = "Atualização: " & MAX(Atualizacao[Data e Hora])
 		displayFolder: 0. Aux
 		lineageTag: 97da66ff-53c2-478e-91bb-da888222b682
 
+	/// Medida auxiliar constante (0). Usada para forçar contexto em visuais sem métrica de negócio.
 	measure Dummy = {0}
 		formatString: 0
 		displayFolder: 0. Aux
 		lineageTag: 3581f06a-c2d1-44f6-bab6-7702f11c7db4
+
+	/// Receita líquida dos pedidos faturados: Quantidade × PreçoUnitário × (1 − DescontoPct). Exclui pedidos cancelados.
+	measure Receita =
+			CALCULATE(
+			    SUMX(
+			        fato_vendas,
+			        fato_vendas[Quantidade] * fato_vendas[PrecoUnitario] * ( 1 - fato_vendas[DescontoPct] )
+			    ),
+			    fato_vendas[Status] = "Faturado"
+			)
+		formatString: "R$" #,##0.00
+		displayFolder: 1. Vendas
+		lineageTag: 11b925eb-c892-4e60-9f0e-1d994e950057
+
+	/// Receita antes do desconto dos pedidos faturados: Quantidade × PreçoUnitário.
+	measure 'Receita Bruta' =
+			CALCULATE(
+			    SUMX( fato_vendas, fato_vendas[Quantidade] * fato_vendas[PrecoUnitario] ),
+			    fato_vendas[Status] = "Faturado"
+			)
+		formatString: "R$" #,##0.00
+		displayFolder: 1. Vendas
+		lineageTag: e03a3134-5bd7-4ac0-89f8-b871610ee3d0
+
+	/// Valor total concedido em desconto nos pedidos faturados: Receita Bruta − Receita.
+	measure Desconto = [Receita Bruta] - [Receita]
+		formatString: "R$" #,##0.00
+		displayFolder: 1. Vendas
+		lineageTag: 760fb03b-b7d8-46d3-8140-cb607d086c16
+
+	/// Desconto médio ponderado sobre a receita bruta: Desconto ÷ Receita Bruta.
+	measure 'Desconto %' = DIVIDE( [Desconto], [Receita Bruta] )
+		formatString: 0.0%
+		displayFolder: 1. Vendas
+		lineageTag: 8ecbcd2d-ed41-489d-95a7-c8d2c5653c6a
+
+	/// Custo total dos pedidos faturados: Quantidade × CustoUnitário.
+	measure Custo =
+			CALCULATE(
+			    SUMX( fato_vendas, fato_vendas[Quantidade] * fato_vendas[CustoUnitario] ),
+			    fato_vendas[Status] = "Faturado"
+			)
+		formatString: "R$" #,##0.00
+		displayFolder: 1. Vendas
+		lineageTag: 788baf39-4a31-4cc8-992d-91d60dadbedb
+
+	/// Margem bruta em valor: Receita − Custo.
+	measure 'Margem Bruta' = [Receita] - [Custo]
+		formatString: "R$" #,##0.00
+		displayFolder: 1. Vendas
+		lineageTag: ca79f5f3-56df-4eff-aa36-ac495ee2f488
+
+	/// Margem bruta percentual sobre a receita líquida: Margem Bruta ÷ Receita.
+	measure 'Margem Bruta %' = DIVIDE( [Margem Bruta], [Receita] )
+		formatString: 0.0%
+		displayFolder: 1. Vendas
+		lineageTag: 534158e4-31d9-4fac-b1d5-9765c3cbb683
+
+	/// Soma das quantidades dos pedidos faturados.
+	measure 'Quantidade Vendida' = CALCULATE( SUM( fato_vendas[Quantidade] ), fato_vendas[Status] = "Faturado" )
+		formatString: #,##0
+		displayFolder: 1. Vendas
+		lineageTag: 444a3389-fc33-4a77-a8c6-f6dad5b7090d
+
+	/// Quantidade de pedidos faturados (contagem distinta de PedidoID).
+	measure Pedidos = CALCULATE( DISTINCTCOUNT( fato_vendas[PedidoID] ), fato_vendas[Status] = "Faturado" )
+		formatString: #,##0
+		displayFolder: 1. Vendas
+		lineageTag: 16943e0e-0043-41e4-a2c0-55730439b29d
+
+	/// Quantidade de pedidos com Status = Cancelado.
+	measure 'Pedidos Cancelados' = CALCULATE( DISTINCTCOUNT( fato_vendas[PedidoID] ), fato_vendas[Status] = "Cancelado" )
+		formatString: #,##0
+		displayFolder: 1. Vendas
+		lineageTag: c0de36d9-b890-4bb1-9977-7c6f38b7bbab
+
+	/// Pedidos cancelados sobre o total de pedidos (faturados + cancelados).
+	measure 'Taxa de Cancelamento %' = DIVIDE( [Pedidos Cancelados], [Pedidos] + [Pedidos Cancelados] )
+		formatString: 0.0%
+		displayFolder: 1. Vendas
+		lineageTag: 8a58eea1-d5a8-4504-aef1-93dab4a2e1dd
+
+	/// Receita média por pedido faturado: Receita ÷ Pedidos.
+	measure 'Ticket Médio' = DIVIDE( [Receita], [Pedidos] )
+		formatString: "R$" #,##0.00
+		displayFolder: 1. Vendas
+		lineageTag: 22bd9595-0a48-41d5-9fc6-68a4e0b131bc
+
+	/// Clientes distintos com ao menos um pedido faturado no período filtrado.
+	measure 'Clientes Ativos' = CALCULATE( DISTINCTCOUNT( fato_vendas[ClienteID] ), fato_vendas[Status] = "Faturado" )
+		formatString: #,##0
+		displayFolder: 1. Vendas
+		lineageTag: dbeb0512-e110-4a52-9392-c360a6d09c0b
+
+	/// Meta de faturamento (soma de metas_mensais[MetaValor]). Grão mensal: válida em mês, trimestre, ano; vazia em filtro de dia que não inclua o dia 1.
+	measure Meta = SUM( metas_mensais[MetaValor] )
+		formatString: "R$" #,##0.00
+		displayFolder: 2. Meta
+		lineageTag: 28dd4b53-f7d4-4dd7-9cab-ee0d84d6adf4
+
+	/// Percentual da meta atingido: Receita ÷ Meta. Em branco quando não há meta no contexto.
+	measure 'Atingimento %' = DIVIDE( [Receita], [Meta] )
+		formatString: 0.0%
+		displayFolder: 2. Meta
+		lineageTag: 02217724-8036-4e1b-a06e-dad11c0beada
+
+	/// Diferença entre receita e meta: Receita − Meta. Negativo = abaixo da meta. Em branco quando falta meta ou receita no contexto (ex.: mês futuro).
+	measure 'Gap Meta' = IF( ISBLANK( [Meta] ) || ISBLANK( [Receita] ), BLANK(), [Receita] - [Meta] )
+		formatString: "R$" #,##0.00;-"R$" #,##0.00
+		displayFolder: 2. Meta
+		lineageTag: 7c2b3c61-d171-4d80-8b15-01b3f49621a2
+
+	/// Receita no mesmo período do ano anterior (SAMEPERIODLASTYEAR sobre dim_calendario[Data]).
+	measure 'Receita Ano Anterior' = CALCULATE( [Receita], SAMEPERIODLASTYEAR( dim_calendario[Data] ) )
+		formatString: "R$" #,##0.00
+		displayFolder: 3. Tempo
+		lineageTag: 74a497ca-00ac-4ff1-89c4-b26fa573a14a
+
+	/// Variação da receita contra o mesmo período do ano anterior: (Receita − Receita Ano Anterior) ÷ Receita Ano Anterior.
+	measure 'Receita Var. Anual %' =
+			VAR _atual = [Receita]
+			VAR _anterior = [Receita Ano Anterior]
+			RETURN
+			    IF( ISBLANK( _atual ) || ISBLANK( _anterior ), BLANK(), DIVIDE( _atual - _anterior, _anterior ) )
+		formatString: 0.0%;-0.0%
+		displayFolder: 3. Tempo
+		lineageTag: 5ec6be8a-3b54-43bd-badc-280286aecc2e
+
+	/// Receita do período equivalente deslocado um mês para trás (DATEADD −1 mês sobre dim_calendario[Data]).
+	measure 'Receita Mês Anterior' = CALCULATE( [Receita], DATEADD( dim_calendario[Data], -1, MONTH ) )
+		formatString: "R$" #,##0.00
+		displayFolder: 3. Tempo
+		lineageTag: 28b382c8-0b25-4306-8ef1-bc7fa014a7ed
+
+	/// Variação da receita contra o mês anterior: (Receita − Receita Mês Anterior) ÷ Receita Mês Anterior.
+	measure 'Receita Var. Mensal %' =
+			VAR _atual = [Receita]
+			VAR _anterior = [Receita Mês Anterior]
+			RETURN
+			    IF( ISBLANK( _atual ) || ISBLANK( _anterior ), BLANK(), DIVIDE( _atual - _anterior, _anterior ) )
+		formatString: 0.0%;-0.0%
+		displayFolder: 3. Tempo
+		lineageTag: 5e95d847-2bae-42bf-9a73-4546acd0a692
+
+	/// Receita acumulada no ano até a data filtrada (TOTALYTD sobre dim_calendario[Data]).
+	measure 'Receita Acumulada Ano' = TOTALYTD( [Receita], dim_calendario[Data] )
+		formatString: "R$" #,##0.00
+		displayFolder: 3. Tempo
+		lineageTag: ccac5edd-9664-42b1-b4e8-a081c9c894ea
+
+	/// Meta acumulada no ano até o mês filtrado (TOTALYTD sobre dim_calendario[Data]).
+	measure 'Meta Acumulada Ano' = TOTALYTD( [Meta], dim_calendario[Data] )
+		formatString: "R$" #,##0.00
+		displayFolder: 3. Tempo
+		lineageTag: 5b7b9fb5-e99c-4b59-a2f8-98c1ceb61270
+
+	/// Atingimento da meta no acumulado do ano: Receita Acumulada Ano ÷ Meta Acumulada Ano.
+	measure 'Atingimento Acumulado Ano %' = DIVIDE( [Receita Acumulada Ano], [Meta Acumulada Ano] )
+		formatString: 0.0%
+		displayFolder: 3. Tempo
+		lineageTag: 52ba412e-1df6-4b67-9073-3acfdf88c61d
 
 	column 'Coluna 1'
 		dataType: string

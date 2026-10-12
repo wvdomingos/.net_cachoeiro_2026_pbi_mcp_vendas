@@ -47,9 +47,18 @@ metas_mensais[DataMes]     → dim_calendario[Data]
 metas_mensais[VendedorID]  → dim_vendedores[VendedorID]
 ```
 
-**O que falta:** as medidas (só existem `txtAtualizacao` e `Dummy`, ambas em `0. Aux`) e o conteúdo
-do relatório. Hoje são 3 páginas (`Capa`, `Subcapa`, `Overview`), cada uma com um único `cardVisual`
-mostrando `txtAtualizacao`. Página ativa: `Overview`.
+**Medidas:** 25 em `Medidas`, todas com `description`. Pastas: `0. Aux` (`txtAtualizacao`, `Dummy`),
+`1. Vendas` (Receita, Receita Bruta, Desconto, Desconto %, Custo, Margem Bruta, Margem Bruta %,
+Quantidade Vendida, Pedidos, Pedidos Cancelados, Taxa de Cancelamento %, Ticket Médio, Clientes
+Ativos), `2. Meta` (Meta, Atingimento %, Gap Meta), `3. Tempo` (Receita Ano Anterior, Receita Var.
+Anual %, Receita Mês Anterior, Receita Var. Mensal %, Receita Acumulada Ano, Meta Acumulada Ano,
+Atingimento Acumulado Ano %). Regras: toda medida de venda filtra `fato_vendas[Status] = "Faturado"`;
+Receita = Σ Quantidade × PrecoUnitario × (1 − DescontoPct); variações retornam BLANK quando falta
+base ou valor atual (mês futuro não vira −100%).
+
+**Relatório:** 3 páginas (`Capa`, `Subcapa`, `Overview`); `Overview` (ativa) tem slicers de Ano,
+MesNome, Regiao e Segmento, um combo coluna/linha de Receita × Meta por mês e o card de
+`txtAtualizacao`. `Capa` e `Subcapa` só têm o card.
 
 Dois limites conhecidos do desenho atual, nenhum deles um defeito a corrigir às cegas:
 
