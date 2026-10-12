@@ -20,6 +20,7 @@ Catálogo geral de conteúdo. Atualizado a cada ingest.
 | [[DESING - Contrato Visual]] | Design | [[DESING]] | 2026-10-12 |
 | [[Fonte de Dados]] | Dados | [[CLAUDE]] | 2026-10-12 |
 | [[Ferramental MCP e Skills]] | Ferramental | [[CLAUDE]] | 2026-10-12 |
+| [[Repositorio GitHub]] | Ferramental | [[README]], [[CLAUDE]] | 2026-10-12 |
 
 ## Entidades
 
@@ -47,8 +48,8 @@ Catálogo geral de conteúdo. Atualizado a cada ingest.
 
 | Métrica | Valor |
 |---|---|
-| Total de Sínteses | 5 |
+| Total de Sínteses | 6 |
 | Total de Entidades | 7 |
 | Total de Conceitos | 5 |
-| Fontes processadas | 2 |
+| Fontes processadas | 3 |
 | Último ingest | 2026-10-12 |

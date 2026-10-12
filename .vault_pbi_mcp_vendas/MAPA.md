@@ -53,6 +53,7 @@ O vault vive dentro da pasta do projeto, ao lado de:
 |---|---|
 | `../CLAUDE.md` | Guia operacional para Claude Code: arquitetura do modelo, convenções, armadilhas |
 | `../DESING.md` | Contrato visual (paleta, tipografia, layout). Sintetizado em [[DESING - Contrato Visual]]; seus links resolvem em [[Paleta - Dashboard Power BI]] e [[MCP (Conceito)]] |
+| `../README.md`, `../LICENSE` | Apresentação pública e licença MIT. Sintetizados em [[Repositorio GitHub]] |
 | `../dashboards/` | PBIP: modelo semântico (TMDL) e relatório (PBIR) |
 | `../dados/Base de Dados.xlsx` | Fonte de dados (5 planilhas) |
 
@@ -67,7 +68,7 @@ O vault vive dentro da pasta do projeto, ao lado de:
 | Relatorio | [[Relatorio PBIR]] |
 | Design | [[DESING - Contrato Visual]] |
 | Dados | [[Fonte de Dados]] |
-| Ferramental | [[Ferramental MCP e Skills]] |
+| Ferramental | [[Ferramental MCP e Skills]], [[Repositorio GitHub]] |
 
 Entidades e conceitos listados em [[index]].
 

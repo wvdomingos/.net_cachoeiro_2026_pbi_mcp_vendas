@@ -11,6 +11,15 @@ status: active
 
 Append-only. Entradas mais recentes no topo.
 
+## [2026-10-12] ingest | README.md e reingest de CLAUDE.md (versionamento)
+
+- **Operação:** ingest de `README.md`; reingest de `CLAUDE.md` após criação do repositório git
+- **Fontes processadas:** `README.md` (nova), `CLAUDE.md` (cópia arquivada substituída pela versão atual)
+- **Artefatos criados:** `02-Wiki/Syntheses/Ferramental/Repositorio GitHub.md`
+- **Artefatos atualizados:** `02-Wiki/Syntheses/Ferramental/Ferramental MCP e Skills.md` e `02-Wiki/Concepts/PBIP (Conceito).md` (removido "não é repositório git"), `00-System/index.md`, `Dashboard.md`, `MAPA.md`
+- **Realizado por:** Claude Code
+- **Aprovado por:** Wander
+
 ## [2026-10-12] ingest | DESING.md e CLAUDE.md
 
 - **Operação:** ingest inicial das fontes primárias do projeto

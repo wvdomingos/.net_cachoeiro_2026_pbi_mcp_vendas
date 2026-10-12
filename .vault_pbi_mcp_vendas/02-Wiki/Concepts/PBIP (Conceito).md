@@ -24,6 +24,6 @@ dashboards/.net_cachoeiro_2026_pbi_mcp_vendas.Report/
 
 - Renomear/mover pastas exige atualizar `.pbip`, `definition.pbir` e `displayName` nos dois `.platform`.
 - `.pbi/localSettings.json` e `.pbi/cache.abf` são artefatos locais (ignorados em `.gitignore`).
-- Projeto não é repositório git.
+- Versionado em git público — [[Repositorio GitHub]]. `*.pbix` ignorado: o PBIP é a fonte de verdade.
 
 Ver [[Modelo Semantico]], [[Relatorio PBIR]].

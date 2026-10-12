@@ -37,6 +37,7 @@ Hub de navegação do conhecimento do projeto **.net_cachoeiro_2026_pbi_mcp_vend
 
 ### Ferramental
 - [[Ferramental MCP e Skills]] — skills, MCP `powerbi-modeling-mcp`, fallbacks TMDL/ADOMD
+- [[Repositorio GitHub]] — remoto público, `.gitignore`, licença MIT, README
 
 ## Entidades
 
@@ -60,13 +61,14 @@ Hub de navegação do conhecimento do projeto **.net_cachoeiro_2026_pbi_mcp_vend
 
 - [[CLAUDE]] — guia operacional para Claude Code
 - [[DESING]] — contrato visual
+- [[README]] — apresentação pública do repositório
 
 ## Estatísticas
 
 | Métrica | Valor |
 |---|---|
-| Total de Sínteses | 5 |
+| Total de Sínteses | 6 |
 | Total de Entidades | 7 |
 | Total de Conceitos | 5 |
-| Fontes processadas | 2 |
+| Fontes processadas | 3 |
 | Último ingest | 2026-10-12 |

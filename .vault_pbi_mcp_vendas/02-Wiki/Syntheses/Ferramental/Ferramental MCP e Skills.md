@@ -17,7 +17,7 @@ Síntese de `CLAUDE.md`, seção "Ferramental". Como Claude Code edita o [[Model
 
 ## Ciclo de trabalho
 
-Sem build, lint ou testes. Editar TMDL/PBIR → abrir `dashboards/.net_cachoeiro_2026_pbi_mcp_vendas.pbip` no [[Power BI (Entidade)|Power BI Desktop]] → atualizar. Projeto **não é repositório git**.
+Sem build, lint ou testes. Editar TMDL/PBIR → abrir `dashboards/.net_cachoeiro_2026_pbi_mcp_vendas.pbip` no [[Power BI (Entidade)|Power BI Desktop]] → atualizar. Versionado no GitHub — ver [[Repositorio GitHub]].
 
 ## Skills
 
