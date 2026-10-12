@@ -16,7 +16,7 @@ dashboards/.net_cachoeiro_2026_pbi_mcp_vendas.Report/          # relatório (PBI
 DESING.md                                                 # contrato visual (paleta, tipografia, layout)
 assets/                                                   # capa_1.jpg, capa_1_fundo.png, capa_2.jpg
 docs/                                                     # vazio
-.vault_pbi_mcp_vendas/                                    # vault Obsidian, só .obsidian/ (sem notas)
+.vault_pbi_mcp_vendas/                                    # vault Obsidian (LLM Wiki): MAPA.md, Dashboard.md, 02-Wiki/
 ```
 
 Não há build, lint ou testes. O ciclo é: editar TMDL/PBIR → abrir o `.pbip` no Power BI Desktop →
@@ -158,9 +158,11 @@ estado) e uma seção explícita de guardrails para IA. Regras que mais importam
 - Não inventar dados, metas, comparações ou recomendações; definição ausente vira pendência, não exemplo.
 - Nunca afirmar "acessibilidade garantida" — os índices de contraste valem só para os pares listados.
 
-Os wikilinks do arquivo (`[[Paleta - Dashboard Power BI]]`, `[[MCP (Conceito)]]`) apontam para notas
-de um vault Obsidian que **não está neste diretório** — `.vault_pbi_mcp_vendas/` só tem a config
-`.obsidian/`. Trate o `DESING.md` como fonte única; não tente resolver os links.
+Os wikilinks do arquivo (`[[Paleta - Dashboard Power BI]]`, `[[MCP (Conceito)]]`) resolvem em
+`.vault_pbi_mcp_vendas/02-Wiki/`, vault Obsidian no padrão LLM Wiki (`MAPA.md` descreve a estrutura;
+`00-System/ingestion-protocol.md`, o fluxo). O vault **sintetiza** `CLAUDE.md`, `DESING.md` e os
+arquivos do projeto; em conflito, vale o arquivo do projeto. Ao alterar `CLAUDE.md` ou `DESING.md`,
+reingira no vault (skill `obsidian-vault-manager`).
 
 ## Armadilhas conhecidas
 
