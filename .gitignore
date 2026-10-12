@@ -1,13 +1,29 @@
-# Power BI Desktop artefatos locais
+# Power BI Desktop — artefatos locais do PBIP (cache de dados e estado do editor)
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
 
-# Obsidian estado local
+# Power BI — binários; a fonte de verdade é o PBIP em dashboards/
+*.pbix
+*.pbit
+
+# Obsidian — estado local do vault
 .vault_pbi_mcp_vendas/.obsidian/workspace.json
+.vault_pbi_mcp_vendas/.obsidian/workspace-mobile.json
+.vault_pbi_mcp_vendas/.trash/
 
-# Office lock files
+# Claude Code — configuração local da máquina
+.claude/settings.local.json
+
+# Office — lock files e temporários
 ~$*
+*.tmp
 
-# SO
+# Editores
+.vscode/
+.idea/
+.vs/
+
+# Sistema operacional
 Thumbs.db
+desktop.ini
 .DS_Store
