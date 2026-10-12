@@ -12,7 +12,7 @@ fontes:
 
 # Medidas (Entidade)
 
-Tabela vazia do [[Modelo Semantico]] que serve só de **container de medidas**. Grupo `Aux`, `isHidden`. Toda medida nova vai aqui.
+Tabela vazia do [[Modelo Semantico]] que serve só de **container de medidas**. Grupo `Aux`, tabela **visível** (só a coluna `Coluna 1` é oculta). Toda medida nova vai aqui.
 
 ## Medidas existentes
 

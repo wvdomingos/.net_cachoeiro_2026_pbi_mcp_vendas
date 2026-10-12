@@ -11,6 +11,14 @@ status: active
 
 Append-only. Entradas mais recentes no topo.
 
+## [2026-10-12] correção | Medidas não é isHidden
+
+- **Operação:** correção factual após validar modelo vivo via MCP (`GetStats`: `Medidas.isHidden = false`)
+- **Fontes processadas:** `CLAUDE.md` (corrigido e cópia arquivada atualizada)
+- **Artefatos atualizados:** `02-Wiki/Syntheses/Modelo/Modelo Semantico.md`, `02-Wiki/Entities/Medidas (Entidade).md`
+- **Realizado por:** Claude Code
+- **Aprovado por:** Wander
+
 ## [2026-10-12] ingest | README.md e reingest de CLAUDE.md (versionamento)
 
 - **Operação:** ingest de `README.md`; reingest de `CLAUDE.md` após criação do repositório git

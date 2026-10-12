@@ -94,10 +94,11 @@ O caminho do arquivo vem do parâmetro `pCaminhoExcel`, declarado em `definition
   Tem `dataCategory: Time` e ~14 displayFolders. **Ajustar o calendário = mexer nesses parâmetros**,
   não nas ~1160 linhas de definição de coluna acima deles.
 
-**3. Tabelas auxiliares (grupo `Aux`, ambas `isHidden`)**:
-- `Atualizacao` — timestamp da última atualização, via `DateTime.LocalNow()` com
+**3. Tabelas auxiliares (grupo `Aux`)**:
+- `Atualizacao` (`isHidden`) — timestamp da última atualização, via `DateTime.LocalNow()` com
   `DateTimeZone.SwitchZone(...,-3)` para horário de Brasília.
-- `Medidas` — tabela vazia que serve só de **container de medidas**. Toda medida nova vai aqui.
+- `Medidas` (visível; só a coluna `Coluna 1` é oculta) — tabela vazia que serve só de **container de
+  medidas**. Toda medida nova vai aqui.
 
 **4. Camada de auto-documentação (tabelas calculadas DAX)** — este é o traço mais incomum do modelo:
 - `Meta_Tables`, `Meta_Columns`, `Meta_Measures`, `Meta_Relationships` = `INFO.VIEW.TABLES()`,

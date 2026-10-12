@@ -43,7 +43,7 @@ metas_mensais[VendedorID]  → dim_vendedores[VendedorID]
 
 1. **Excel** (`Fato`, `Dimensão`) — 5 tabelas, mesmo M, só muda `Item=`. Caminho vem do parâmetro `pCaminhoExcel` em `expressions.tmdl`. Ver [[Fonte de Dados]].
 2. **Gerada em M** — [[dim_calendario (Entidade)|dim_calendario]], parâmetros no topo do Power Query.
-3. **Auxiliares** (`Aux`, `isHidden`) — `Atualizacao` (timestamp Brasília) e [[Medidas (Entidade)|Medidas]] (container de medidas).
+3. **Auxiliares** (`Aux`) — `Atualizacao` (`isHidden`, timestamp Brasília) e [[Medidas (Entidade)|Medidas]] (visível, container de medidas).
 4. **Auto-documentação** — `Meta_Tables/Columns/Measures/Relationships` via `INFO.VIEW.*()` e [[documentacao (Entidade)|documentacao]] (UNION medidas + colunas visíveis).
 
 > [!INFO]
