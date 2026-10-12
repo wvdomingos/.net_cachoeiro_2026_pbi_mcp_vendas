@@ -1,0 +1,13 @@
+# Power BI Desktop artefatos locais
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# Obsidian estado local
+.vault_pbi_mcp_vendas/.obsidian/workspace.json
+
+# Office lock files
+~$*
+
+# SO
+Thumbs.db
+.DS_Store
