@@ -16,7 +16,8 @@ Síntese de `CLAUDE.md`, seção "Relatório (PBIR)". Relatório em formato [[PB
 
 ## Estado
 
-- 3 páginas: `Capa`, `Subcapa`, `Overview` (ativa). Cada uma com um único `cardVisual` mostrando `txtAtualizacao`.
+- 3 páginas: `Capa`, `Subcapa`, `Overview` (ativa). `Capa` e `Subcapa` só têm o card de `txtAtualizacao`.
+- `Overview`: visual **HTML Content** (custom, `publicCustomVisuals` em `report.json`) com `HTML KPIs Visão Geral`, slicers de Ano/MesNome/Regiao/Segmento, combo coluna/linha Receita × Meta por mês, card `txtAtualizacao`.
 - Páginas em **1920×1080**.
 - Tema base `Fluent2-CY26SU09` + tema custom `StaticResources/RegisteredResources/Custom3444442517655203.json`.
 - Imagens de `assets/` registradas em `RegisteredResources/` (sufixo numérico) e usadas como fundo em `page.json`.

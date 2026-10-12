@@ -11,6 +11,14 @@ status: active
 
 Append-only. Entradas mais recentes no topo.
 
+## [2026-10-12] reingest | CLAUDE.md após medidas DAX e visual HTML
+
+- **Operação:** reingest de `CLAUDE.md` (26 medidas criadas via MCP; página Overview com HTML Content, slicers e combo)
+- **Fontes processadas:** `CLAUDE.md` (cópia arquivada atualizada)
+- **Artefatos atualizados:** `02-Wiki/Entities/Medidas (Entidade).md`, `02-Wiki/Entities/documentacao (Entidade).md`, `02-Wiki/Syntheses/Modelo/Modelo Semantico.md`, `02-Wiki/Syntheses/Relatorio/Relatorio PBIR.md`
+- **Realizado por:** Claude Code
+- **Aprovado por:** Wander
+
 ## [2026-10-12] correção | Medidas não é isHidden
 
 - **Operação:** correção factual após validar modelo vivo via MCP (`GetStats`: `Medidas.isHidden = false`)

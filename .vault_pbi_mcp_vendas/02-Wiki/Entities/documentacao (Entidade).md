@@ -24,6 +24,6 @@ Camada de auto-documentação do [[Modelo Semantico]] — o traço mais incomum 
 > [!INFO]
 > `description` de medidas e colunas **não é decorativa**: alimenta esta tabela, exibida no [[Relatorio PBIR]]. Sempre preencher ao criar medida ou coluna visível.
 
-Cobertura atual: colunas das 5 tabelas do Excel completas; [[Medidas (Entidade)|Medidas]] e [[dim_calendario (Entidade)|dim_calendario]] sem nenhuma.
+Cobertura atual: colunas das 5 tabelas do Excel e todas as medidas de [[Medidas (Entidade)|Medidas]] completas; [[dim_calendario (Entidade)|dim_calendario]] sem nenhuma.
 
 Em TMDL, descrição = comentário `///` na linha acima do objeto.

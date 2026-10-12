@@ -37,7 +37,7 @@ metas_mensais[DataMes]     → dim_calendario[Data]
 metas_mensais[VendedorID]  → dim_vendedores[VendedorID]
 ```
 
-**Falta:** medidas de negócio (só `txtAtualizacao` e `Dummy`, pasta `0. Aux`).
+**Medidas:** 26 em [[Medidas (Entidade)|Medidas]] (pastas `1. Vendas`, `2. Meta`, `3. Tempo`, `4. HTML`), todas com `description`.
 
 ## Quatro categorias de tabela
 
@@ -47,7 +47,7 @@ metas_mensais[VendedorID]  → dim_vendedores[VendedorID]
 4. **Auto-documentação** — `Meta_Tables/Columns/Measures/Relationships` via `INFO.VIEW.*()` e [[documentacao (Entidade)|documentacao]] (UNION medidas + colunas visíveis).
 
 > [!INFO]
-> `description` de medidas e colunas alimenta a tabela `documentacao` exibida no relatório. Preencher sempre. Hoje: colunas do Excel completas; medidas e `dim_calendario` sem descrição.
+> `description` de medidas e colunas alimenta a tabela `documentacao` exibida no relatório. Preencher sempre. Hoje: colunas do Excel e todas as medidas completas; `dim_calendario` sem descrição.
 
 ## Convenções
 

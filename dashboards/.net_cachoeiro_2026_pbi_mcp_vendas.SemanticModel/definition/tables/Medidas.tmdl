@@ -173,6 +173,90 @@ table Medidas
 		displayFolder: 3. Tempo
 		lineageTag: 52ba412e-1df6-4b67-9073-3acfdf88c61d
 
+	/// HTML com 4 cards KPI em uma linha (Receita, Atingimento da Meta, Pedidos, Ticket Médio) para o visual HTML Content. Segue DESING.md: tokens de cor fixos, Segoe UI, card = título → valor → comparação → estado; período declarado uma vez abaixo da linha. Comparação = mesmo período do ano anterior (meta no card de atingimento). Favorável = variação ≥ 0 / meta ≥ 100%; 'não definido' quando falta base.
+	measure 'HTML KPIs Visão Geral' =
+			-- Tokens (DESING.md)
+			VAR _cCard = "#11162D"
+			VAR _cText = "#F5F7FF"
+			VAR _cSec  = "#BFC8E2"
+			VAR _cFav  = "#50D6B2"
+			VAR _cDes  = "#FF7D92"
+			
+			-- Período com vendas no contexto
+			VAR _d1 = CALCULATE( MIN( fato_vendas[Data] ), fato_vendas[Status] = "Faturado" )
+			VAR _d2 = CALCULATE( MAX( fato_vendas[Data] ), fato_vendas[Status] = "Faturado" )
+			VAR _periodo =
+			    IF( ISBLANK( _d1 ), "Sem dados para os filtros atuais",
+			        "Período: " & FORMAT( _d1, "dd/MM/yyyy" ) & " a " & FORMAT( _d2, "dd/MM/yyyy" ) & " · comparação com o mesmo período do ano anterior" )
+			
+			-- Valores
+			VAR _rec    = [Receita]
+			VAR _varRec = [Receita Var. Anual %]
+			VAR _meta   = [Meta]
+			VAR _ating  = [Atingimento %]
+			VAR _gap    = [Gap Meta]
+			VAR _ped    = [Pedidos]
+			VAR _pedAA  = CALCULATE( [Pedidos], SAMEPERIODLASTYEAR( dim_calendario[Data] ) )
+			VAR _varPed = IF( ISBLANK( _ped ) || ISBLANK( _pedAA ), BLANK(), DIVIDE( _ped - _pedAA, _pedAA ) )
+			VAR _tk     = [Ticket Médio]
+			VAR _tkAA   = CALCULATE( [Ticket Médio], SAMEPERIODLASTYEAR( dim_calendario[Data] ) )
+			VAR _varTk  = IF( ISBLANK( _tk ) || ISBLANK( _tkAA ), BLANK(), DIVIDE( _tk - _tkAA, _tkAA ) )
+			
+			-- Template: {T} título, {V} valor, {C} comparação, {SC} cor do estado, {S} estado
+			VAR _tpl =
+			    "<div style='background:" & _cCard & ";border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:8px;min-width:0;'>" &
+			    "<div style='color:" & _cText & ";font-size:16pt;font-weight:600;'>{T}</div>" &
+			    "<div style='color:" & _cText & ";font-size:32pt;font-weight:600;line-height:1.1;white-space:nowrap;'>{V}</div>" &
+			    "<div style='color:" & _cSec & ";font-size:14pt;'>{C}</div>" &
+			    "<div style='color:{SC};font-size:12pt;font-weight:600;'>{S}</div>" &
+			    "</div>"
+			
+			VAR _semDados = "—"
+			VAR _naoDef   = "Comparação não definida"
+			VAR _pct      = "+0.0%;-0.0%;0.0%"
+			
+			-- 1. Receita
+			VAR _c1 = SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( _tpl,
+			    "{T}", "Receita líquida" ),
+			    "{V}", IF( ISBLANK( _rec ), _semDados, FORMAT( _rec, "R$ #,##0", "pt-BR" ) ) ),
+			    "{C}", IF( ISBLANK( _varRec ), _naoDef, FORMAT( _varRec, _pct, "pt-BR" ) & " vs. ano anterior" ) ),
+			    "{SC}", SWITCH( TRUE(), ISBLANK( _varRec ), _cSec, _varRec >= 0, _cFav, _cDes ) ),
+			    "{S}", SWITCH( TRUE(), ISBLANK( _varRec ), "Estado não definido", _varRec >= 0, "✔ Favorável", "✖ Desfavorável" ) )
+			
+			-- 2. Atingimento da meta
+			VAR _c2 = SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( _tpl,
+			    "{T}", "Atingimento da meta" ),
+			    "{V}", IF( ISBLANK( _ating ), _semDados, FORMAT( _ating, "0.0%", "pt-BR" ) ) ),
+			    "{C}", IF( ISBLANK( _meta ), "Meta não definida no período", "Gap " & FORMAT( _gap, "+R$ #,##0;-R$ #,##0;R$ 0", "pt-BR" ) & " sobre meta de " & FORMAT( _meta, "R$ #,##0", "pt-BR" ) ) ),
+			    "{SC}", SWITCH( TRUE(), ISBLANK( _ating ), _cSec, _ating >= 1, _cFav, _cDes ) ),
+			    "{S}", SWITCH( TRUE(), ISBLANK( _ating ), "Estado não definido", _ating >= 1, "✔ Favorável", "✖ Desfavorável" ) )
+			
+			-- 3. Pedidos
+			VAR _c3 = SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( _tpl,
+			    "{T}", "Pedidos faturados" ),
+			    "{V}", IF( ISBLANK( _ped ), _semDados, FORMAT( _ped, "#,##0", "pt-BR" ) ) ),
+			    "{C}", IF( ISBLANK( _varPed ), _naoDef, FORMAT( _varPed, _pct, "pt-BR" ) & " vs. ano anterior" ) ),
+			    "{SC}", SWITCH( TRUE(), ISBLANK( _varPed ), _cSec, _varPed >= 0, _cFav, _cDes ) ),
+			    "{S}", SWITCH( TRUE(), ISBLANK( _varPed ), "Estado não definido", _varPed >= 0, "✔ Favorável", "✖ Desfavorável" ) )
+			
+			-- 4. Ticket médio
+			VAR _c4 = SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( SUBSTITUTE( _tpl,
+			    "{T}", "Ticket médio" ),
+			    "{V}", IF( ISBLANK( _tk ), _semDados, FORMAT( _tk, "R$ #,##0", "pt-BR" ) ) ),
+			    "{C}", IF( ISBLANK( _varTk ), _naoDef, FORMAT( _varTk, _pct, "pt-BR" ) & " vs. ano anterior" ) ),
+			    "{SC}", SWITCH( TRUE(), ISBLANK( _varTk ), _cSec, _varTk >= 0, _cFav, _cDes ) ),
+			    "{S}", SWITCH( TRUE(), ISBLANK( _varTk ), "Estado não definido", _varTk >= 0, "✔ Favorável", "✖ Desfavorável" ) )
+			
+			RETURN
+			    "<div style='font-family:Segoe UI,Segoe,sans-serif;'>" &
+			    "<div style='display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;'>" &
+			    _c1 & _c2 & _c3 & _c4 &
+			    "</div>" &
+			    "<div style='color:" & _cSec & ";font-size:12pt;margin-top:12px;'>" & _periodo & "</div>" &
+			    "</div>"
+		displayFolder: 4. HTML
+		lineageTag: 4ba30736-a3ec-42a0-b0f5-734b425b20a8
+
 	column 'Coluna 1'
 		dataType: string
 		isHidden
