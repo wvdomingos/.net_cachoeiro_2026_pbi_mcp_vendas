@@ -99,4 +99,4 @@ correspondem a nenhuma empresa real.
 
 ## Licença
 
-Uso livre para fins de estudo e demonstração. Se reaproveitar, cite a origem.
+[MIT](LICENSE).
