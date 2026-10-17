@@ -11,6 +11,14 @@ status: active
 
 Append-only. Entradas mais recentes no topo.
 
+## [2026-10-17] atualização | Visuais da Overview e decisão sobre HTML Narrativa
+
+- **Operação:** documentar os 11 visuais da `Overview` após edição no Desktop; registrar que `HTML Narrativa Visão Geral` fica no modelo sem visual
+- **Fontes processadas:** `CLAUDE.md` (cópia arquivada atualizada); `visual.json` da página `Overview`
+- **Artefatos atualizados:** `02-Wiki/Syntheses/Relatorio/Relatorio PBIR.md`, `02-Wiki/Entities/Medidas (Entidade).md`
+- **Realizado por:** Claude Code
+- **Aprovado por:** Wander
+
 ## [2026-10-17] reingest | CLAUDE.md após medidas HTML Narrativa e Insight
 
 - **Operação:** reingest de `CLAUDE.md` (28 medidas; novas `HTML Narrativa Visão Geral` e `HTML Insight Visão Geral` criadas via MCP)

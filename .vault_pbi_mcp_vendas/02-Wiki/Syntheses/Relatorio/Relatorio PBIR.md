@@ -17,7 +17,8 @@ Síntese de `CLAUDE.md`, seção "Relatório (PBIR)". Relatório em formato [[PB
 ## Estado
 
 - 3 páginas: `Capa`, `Subcapa`, `Overview` (ativa). `Capa` e `Subcapa` só têm o card de `txtAtualizacao`.
-- `Overview`: visual **HTML Content** (custom, `publicCustomVisuals` em `report.json`) com `HTML KPIs Visão Geral`, slicers de Ano/MesNome/Regiao/Segmento, combo coluna/linha Receita × Meta por mês, card `txtAtualizacao`.
+- `Overview` (11 visuais): caixa de texto com o título ".Net Cachoeiro 2026 - Visão Geral"; dois **HTML Content** (custom, `publicCustomVisuals` em `report.json`) com `HTML KPIs Visão Geral` e `HTML Insight Visão Geral`; slicers de Ano/MesNome/Regiao/Segmento; combo coluna/linha Receita × Meta por mês; barras de Receita por Regiao e por Segmento; card `txtAtualizacao`.
+- `HTML Narrativa Visão Geral` não aparece em nenhum visual; fica no modelo por decisão do usuário (2026-10-17). Ver [[Medidas (Entidade)]].
 - Páginas em **1920×1080**.
 - Tema base `Fluent2-CY26SU09` + tema custom `StaticResources/RegisteredResources/Custom3444442517655203.json`.
 - Imagens de `assets/` registradas em `RegisteredResources/` (sufixo numérico) e usadas como fundo em `page.json`.

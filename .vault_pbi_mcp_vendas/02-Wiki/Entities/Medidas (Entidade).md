@@ -29,7 +29,7 @@ Regras: medidas de venda filtram `fato_vendas[Status] = "Faturado"`; Receita = �
 | Medida | Conteúdo |
 |---|---|
 | `HTML KPIs Visão Geral` | 4 cards em uma linha: Receita, Atingimento da meta, Pedidos, Ticket médio; comparação vs. ano anterior; período declarado uma vez |
-| `HTML Narrativa Visão Geral` | Resumo executivo completo: insight → contexto (região, vendedor, categoria e canal líderes; margem; cancelamento) → pontos de atenção (menor atingimento, maior queda anual, cancelamentos) → próximos passos derivados dos números, com "Responsável e prazo: não definidos" |
+| `HTML Narrativa Visão Geral` | Resumo executivo completo: insight → contexto (região, vendedor, categoria e canal líderes; margem; cancelamento) → pontos de atenção (menor atingimento, maior queda anual, cancelamentos) → próximos passos derivados dos números, com "Responsável e prazo: não definidos". **Sem visual no relatório; mantida no modelo por decisão do usuário (2026-10-17), não remover como órfã.** |
 | `HTML Insight Visão Geral` | Só cabeçalho com período + frase de insight (receita, % da meta com gap/folga, variação anual) |
 
 Guardrails aplicados: frases somem quando falta base (sem meta, sem ano anterior, meta batida); sem receita → "Sem dados para os filtros atuais"; rankings via `TOPN` sobre `VALUES` no contexto dos slicers.

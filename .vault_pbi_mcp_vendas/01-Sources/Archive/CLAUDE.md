@@ -56,14 +56,17 @@ Atingimento Acumulado Ano %), `4. HTML` — strings HTML com tokens do `DESING.m
 **HTML Content** (registrado em `report.json` → `publicCustomVisuals`): `HTML KPIs Visão Geral` (4 cards
 KPI em uma linha), `HTML Narrativa Visão Geral` (resumo executivo completo: insight → contexto →
 pontos de atenção → próximos passos, com rankings de região/vendedor/categoria/canal calculados no
-contexto) e `HTML Insight Visão Geral` (só cabeçalho + frase de insight: receita, atingimento da meta
+contexto; **sem visual no relatório, mantida de propósito** por decisão do usuário, não remover como
+órfã) e `HTML Insight Visão Geral` (só cabeçalho + frase de insight: receita, atingimento da meta
 com gap/folga, variação anual). Frases somem quando falta base; nunca inventam responsável ou prazo. Regras: toda medida de venda filtra `fato_vendas[Status] = "Faturado"`;
 Receita = Σ Quantidade × PrecoUnitario × (1 − DescontoPct); variações retornam BLANK quando falta
 base ou valor atual (mês futuro não vira −100%).
 
-**Relatório:** 3 páginas (`Capa`, `Subcapa`, `Overview`); `Overview` (ativa) tem o visual HTML Content com
-`HTML KPIs Visão Geral`, slicers de Ano, MesNome, Regiao e Segmento, um combo coluna/linha de
-Receita × Meta por mês e o card de `txtAtualizacao`. `Capa` e `Subcapa` só têm o card.
+**Relatório:** 3 páginas (`Capa`, `Subcapa`, `Overview`). `Overview` (ativa) tem 11 visuais: caixa de
+texto com o título ".Net Cachoeiro 2026 - Visão Geral"; dois HTML Content, um com `HTML KPIs Visão
+Geral` e outro com `HTML Insight Visão Geral`; slicers de Ano, MesNome, Regiao e Segmento; combo
+coluna/linha de Receita × Meta por mês; barras de Receita por Regiao e por Segmento; card de
+`txtAtualizacao`. `Capa` e `Subcapa` só têm o card.
 
 Dois limites conhecidos do desenho atual, nenhum deles um defeito a corrigir às cegas:
 
