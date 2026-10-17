@@ -13,6 +13,11 @@ A ideia é mostrar, na prática, três coisas:
 3. **Contexto como ativo** — `CLAUDE.md`, `DESING.md` e um vault Obsidian guardam as regras do projeto
    para que qualquer agente (ou pessoa) trabalhe com as mesmas convenções.
 
+## Apresentação
+
+Os slides da talk estão em
+[`docs/apresentacao/NET_Cachoeiro_2026_IA_MCP_v3.pdf`](docs/apresentacao/NET_Cachoeiro_2026_IA_MCP_v3.pdf).
+
 ## Estrutura
 
 ```
@@ -22,6 +27,7 @@ dashboards/
   .net_cachoeiro_2026_pbi_mcp_vendas.SemanticModel/   # modelo em TMDL (definition/tables/*.tmdl)
   .net_cachoeiro_2026_pbi_mcp_vendas.Report/          # relatório em PBIR (um JSON por visual)
 assets/                                               # imagens de capa
+docs/apresentacao/                                    # slides da talk (PDF)
 CLAUDE.md                                             # guia operacional para o agente de IA
 DESING.md                                             # contrato visual: paleta, tipografia, layout
 .vault_pbi_mcp_vendas/                                # vault Obsidian (LLM Wiki) com sínteses do projeto

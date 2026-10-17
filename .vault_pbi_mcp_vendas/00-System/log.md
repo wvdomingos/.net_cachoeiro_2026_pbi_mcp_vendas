@@ -11,6 +11,14 @@ status: active
 
 Append-only. Entradas mais recentes no topo.
 
+## [2026-10-17] reingest | Slides da talk publicados em docs/apresentacao
+
+- **Operação:** registrar `docs/apresentacao/NET_Cachoeiro_2026_IA_MCP_v3.pdf` como slides da talk; o PDF entrou no commit 533e2d6 sem revisão e o usuário decidiu mantê-lo publicado. Conteúdo do PDF não ingerido
+- **Fontes processadas:** `CLAUDE.md` e `README.md` (cópias arquivadas atualizadas)
+- **Artefatos atualizados:** `MAPA.md`, `02-Wiki/Syntheses/Ferramental/Repositorio GitHub.md`
+- **Realizado por:** Claude Code
+- **Aprovado por:** Wander
+
 ## [2026-10-17] atualização | Visuais da Overview e decisão sobre HTML Narrativa
 
 - **Operação:** documentar os 11 visuais da `Overview` após edição no Desktop; registrar que `HTML Narrativa Visão Geral` fica no modelo sem visual

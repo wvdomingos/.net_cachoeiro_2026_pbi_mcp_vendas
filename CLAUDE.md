@@ -15,7 +15,7 @@ dashboards/.net_cachoeiro_2026_pbi_mcp_vendas.SemanticModel/   # modelo semânti
 dashboards/.net_cachoeiro_2026_pbi_mcp_vendas.Report/          # relatório (PBIR, um JSON por visual)
 DESING.md                                                 # contrato visual (paleta, tipografia, layout)
 assets/                                                   # capa_1.jpg, capa_1_fundo.png, capa_2.jpg
-docs/                                                     # vazio
+docs/apresentacao/                                        # slides da talk em PDF (publicados)
 .vault_pbi_mcp_vendas/                                    # vault Obsidian (LLM Wiki): MAPA.md, Dashboard.md, 02-Wiki/
 ```
 

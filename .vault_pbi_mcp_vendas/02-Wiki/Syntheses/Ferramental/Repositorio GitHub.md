@@ -25,7 +25,7 @@ Síntese de `README.md` e da seção de versionamento de `CLAUDE.md`. Projeto ve
 
 ## O que é versionado
 
-PBIP completo (TMDL + PBIR + temas + imagens), `dados/Base de Dados.xlsx` (dados **sintéticos**), `assets/`, `CLAUDE.md`, `DESING.md`, `README.md`, `LICENSE` e este vault (menos estado local do Obsidian).
+PBIP completo (TMDL + PBIR + temas + imagens), `dados/Base de Dados.xlsx` (dados **sintéticos**), `assets/`, slides da talk em `docs/apresentacao/` (PDF), `CLAUDE.md`, `DESING.md`, `README.md`, `LICENSE` e este vault (menos estado local do Obsidian).
 
 ## `.gitignore` da raiz
 

@@ -56,6 +56,7 @@ O vault vive dentro da pasta do projeto, ao lado de:
 | `../README.md`, `../LICENSE` | Apresentação pública e licença MIT. Sintetizados em [[Repositorio GitHub]] |
 | `../dashboards/` | PBIP: modelo semântico (TMDL) e relatório (PBIR) |
 | `../dados/Base de Dados.xlsx` | Fonte de dados (5 planilhas) |
+| `../docs/apresentacao/` | Slides da talk em PDF, publicados no repositório |
 
 > [!WARNING]
 > `CLAUDE.md`, `DESING.md` e os arquivos TMDL/PBIR são as fontes primárias. O vault sintetiza; não substitui. Quando houver conflito, vale o arquivo do projeto.
