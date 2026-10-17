@@ -37,7 +37,7 @@ metas_mensais[DataMes]     → dim_calendario[Data]
 metas_mensais[VendedorID]  → dim_vendedores[VendedorID]
 ```
 
-**Medidas:** 26 em [[Medidas (Entidade)|Medidas]] (pastas `1. Vendas`, `2. Meta`, `3. Tempo`, `4. HTML`), todas com `description`.
+**Medidas:** 28 em [[Medidas (Entidade)|Medidas]] (pastas `1. Vendas`, `2. Meta`, `3. Tempo`, `4. HTML`), todas com `description`.
 
 ## Quatro categorias de tabela
 

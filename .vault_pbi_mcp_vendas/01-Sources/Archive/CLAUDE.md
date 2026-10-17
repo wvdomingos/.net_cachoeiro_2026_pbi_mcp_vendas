@@ -47,14 +47,17 @@ metas_mensais[DataMes]     → dim_calendario[Data]
 metas_mensais[VendedorID]  → dim_vendedores[VendedorID]
 ```
 
-**Medidas:** 26 em `Medidas`, todas com `description`. Pastas: `0. Aux` (`txtAtualizacao`, `Dummy`),
+**Medidas:** 28 em `Medidas`, todas com `description`. Pastas: `0. Aux` (`txtAtualizacao`, `Dummy`),
 `1. Vendas` (Receita, Receita Bruta, Desconto, Desconto %, Custo, Margem Bruta, Margem Bruta %,
 Quantidade Vendida, Pedidos, Pedidos Cancelados, Taxa de Cancelamento %, Ticket Médio, Clientes
 Ativos), `2. Meta` (Meta, Atingimento %, Gap Meta), `3. Tempo` (Receita Ano Anterior, Receita Var.
 Anual %, Receita Mês Anterior, Receita Var. Mensal %, Receita Acumulada Ano, Meta Acumulada Ano,
-Atingimento Acumulado Ano %), `4. HTML` (`HTML KPIs Visão Geral`: string HTML com 4 cards KPI em
-uma linha, tokens do `DESING.md`, renderizada pelo custom visual **HTML Content**, registrado em
-`report.json` → `publicCustomVisuals`). Regras: toda medida de venda filtra `fato_vendas[Status] = "Faturado"`;
+Atingimento Acumulado Ano %), `4. HTML` — strings HTML com tokens do `DESING.md`, renderizadas pelo custom visual
+**HTML Content** (registrado em `report.json` → `publicCustomVisuals`): `HTML KPIs Visão Geral` (4 cards
+KPI em uma linha), `HTML Narrativa Visão Geral` (resumo executivo completo: insight → contexto →
+pontos de atenção → próximos passos, com rankings de região/vendedor/categoria/canal calculados no
+contexto) e `HTML Insight Visão Geral` (só cabeçalho + frase de insight: receita, atingimento da meta
+com gap/folga, variação anual). Frases somem quando falta base; nunca inventam responsável ou prazo. Regras: toda medida de venda filtra `fato_vendas[Status] = "Faturado"`;
 Receita = Σ Quantidade × PrecoUnitario × (1 − DescontoPct); variações retornam BLANK quando falta
 base ou valor atual (mês futuro não vira −100%).
 

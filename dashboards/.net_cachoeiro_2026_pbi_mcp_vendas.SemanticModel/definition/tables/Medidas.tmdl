@@ -257,6 +257,186 @@ table Medidas
 		displayFolder: 4. HTML
 		lineageTag: 4ba30736-a3ec-42a0-b0f5-734b425b20a8
 
+	/// Texto narrativo em HTML para a diretoria (visual HTML Content), gerado dos dados do contexto: insight principal (receita, meta, variação anual), contexto (região, vendedor, categoria e canal líderes; margem; cancelamento), pontos de atenção (vendedor com menor atingimento, região com maior queda anual) e próximos passos derivados só dos números. Segue DESING.md: insight → contexto → ação, tokens de cor fixos, sem dados inventados. Frases somem quando falta base.
+	measure 'HTML Narrativa Visão Geral' =
+			-- Tokens (DESING.md)
+			VAR _cCard = "#11162D"
+			VAR _cText = "#F5F7FF"
+			VAR _cSec  = "#BFC8E2"
+			VAR _cRef  = "#3CCBFF"
+			VAR _cFav  = "#50D6B2"
+			VAR _cAtn  = "#FFC66D"
+			VAR _cDes  = "#FF7D92"
+			
+			-- Formatos
+			VAR _fBRL = "R$ #,##0"
+			VAR _fPct = "0.0%"
+			VAR _fVar = "+0.0%;-0.0%;0.0%"
+			
+			-- KPIs do contexto
+			VAR _rec     = [Receita]
+			VAR _varRec  = [Receita Var. Anual %]
+			VAR _meta    = [Meta]
+			VAR _ating   = [Atingimento %]
+			VAR _gap     = [Gap Meta]
+			VAR _ped     = [Pedidos]
+			VAR _tk      = [Ticket Médio]
+			VAR _mg      = [Margem Bruta %]
+			VAR _canc    = [Taxa de Cancelamento %]
+			VAR _cli     = [Clientes Ativos]
+			VAR _d1 = CALCULATE( MIN( fato_vendas[Data] ), fato_vendas[Status] = "Faturado" )
+			VAR _d2 = CALCULATE( MAX( fato_vendas[Data] ), fato_vendas[Status] = "Faturado" )
+			VAR _periodo = FORMAT( _d1, "dd/MM/yyyy" ) & " a " & FORMAT( _d2, "dd/MM/yyyy" )
+			
+			-- Rankings no contexto atual
+			VAR _tReg = ADDCOLUMNS( VALUES( dim_clientes[Regiao] ), "@r", [Receita], "@v", [Receita Var. Anual %] )
+			VAR _regTopRow = TOPN( 1, FILTER( _tReg, NOT ISBLANK( [@r] ) ), [@r], DESC )
+			VAR _regTop    = MAXX( _regTopRow, dim_clientes[Regiao] )
+			VAR _regTopRec = MAXX( _regTopRow, [@r] )
+			VAR _regTopPct = DIVIDE( _regTopRec, _rec )
+			VAR _regPiorRow = TOPN( 1, FILTER( _tReg, NOT ISBLANK( [@v] ) ), [@v], ASC )
+			VAR _regPior    = MAXX( _regPiorRow, dim_clientes[Regiao] )
+			VAR _regPiorVar = MAXX( _regPiorRow, [@v] )
+			
+			VAR _tVend = ADDCOLUMNS( VALUES( dim_vendedores[Vendedor] ), "@r", [Receita], "@a", [Atingimento %] )
+			VAR _vendTopRow = TOPN( 1, FILTER( _tVend, NOT ISBLANK( [@r] ) ), [@r], DESC )
+			VAR _vendTop    = MAXX( _vendTopRow, dim_vendedores[Vendedor] )
+			VAR _vendTopRec = MAXX( _vendTopRow, [@r] )
+			VAR _vendTopAt  = MAXX( _vendTopRow, [@a] )
+			VAR _vendPiorRow = TOPN( 1, FILTER( _tVend, NOT ISBLANK( [@a] ) ), [@a], ASC )
+			VAR _vendPior    = MAXX( _vendPiorRow, dim_vendedores[Vendedor] )
+			VAR _vendPiorAt  = MAXX( _vendPiorRow, [@a] )
+			VAR _vendAbaixo  = COUNTROWS( FILTER( _tVend, NOT ISBLANK( [@a] ) && [@a] < 1 ) )
+			VAR _vendComMeta = COUNTROWS( FILTER( _tVend, NOT ISBLANK( [@a] ) ) )
+			
+			VAR _tCat = ADDCOLUMNS( VALUES( dim_produtos[Categoria] ), "@r", [Receita] )
+			VAR _catTopRow = TOPN( 1, FILTER( _tCat, NOT ISBLANK( [@r] ) ), [@r], DESC )
+			VAR _catTop    = MAXX( _catTopRow, dim_produtos[Categoria] )
+			VAR _catTopPct = DIVIDE( MAXX( _catTopRow, [@r] ), _rec )
+			
+			VAR _tCanal = ADDCOLUMNS( VALUES( fato_vendas[Canal] ), "@r", [Receita] )
+			VAR _canalTopRow = TOPN( 1, FILTER( _tCanal, NOT ISBLANK( [@r] ) ), [@r], DESC )
+			VAR _canalTop    = MAXX( _canalTopRow, fato_vendas[Canal] )
+			VAR _canalTopPct = DIVIDE( MAXX( _canalTopRow, [@r] ), _rec )
+			
+			-- Helpers de HTML
+			VAR _b1 = "<strong style='color:" & _cText & ";'>"
+			VAR _b0 = "</strong>"
+			VAR _pOpen  = "<p style='margin:0 0 12px 0;'>"
+			VAR _pClose = "</p>"
+			VAR _h = "<div style='color:" & _cRef & ";font-size:12pt;font-weight:600;letter-spacing:.04em;margin:16px 0 8px 0;'>"
+			
+			-- 1. Insight principal
+			VAR _corAting = SWITCH( TRUE(), ISBLANK( _ating ), _cSec, _ating >= 1, _cFav, _cDes )
+			VAR _fraseMeta =
+			    IF( ISBLANK( _meta ), "sem meta definida para o período",
+			        "<span style='color:" & _corAting & ";font-weight:600;'>" & FORMAT( _ating, _fPct, "pt-BR" ) & " da meta</span> de " & FORMAT( _meta, _fBRL, "pt-BR" ) &
+			        " (" & IF( _gap >= 0, "folga", "gap" ) & " de " & FORMAT( ABS( _gap ), _fBRL, "pt-BR" ) & ")" )
+			VAR _fraseVar =
+			    IF( ISBLANK( _varRec ), "",
+			        " e <span style='color:" & IF( _varRec >= 0, _cFav, _cDes ) & ";font-weight:600;'>" & FORMAT( _varRec, _fVar, "pt-BR" ) & "</span> frente ao mesmo período do ano anterior" )
+			VAR _insight =
+			    "<div style='color:" & _cText & ";font-size:20pt;font-weight:600;line-height:1.3;'>" &
+			    "Receita de " & FORMAT( _rec, _fBRL, "pt-BR" ) & ", " & _fraseMeta & _fraseVar & "." &
+			    "</div>"
+			
+			-- 2. Contexto
+			VAR _ctx1 =
+			    IF( ISBLANK( _regTop ), "",
+			        _pOpen & "A região " & _b1 & _regTop & _b0 & " lidera com " & FORMAT( _regTopRec, _fBRL, "pt-BR" ) & " (" & FORMAT( _regTopPct, _fPct, "pt-BR" ) & " do total)" &
+			        IF( ISBLANK( _catTop ), "", "; a categoria " & _b1 & _catTop & _b0 & " responde por " & FORMAT( _catTopPct, _fPct, "pt-BR" ) ) &
+			        IF( ISBLANK( _canalTop ), "", " e o canal " & _b1 & _canalTop & _b0 & " por " & FORMAT( _canalTopPct, _fPct, "pt-BR" ) ) & "." & _pClose )
+			VAR _ctx2 =
+			    IF( ISBLANK( _vendTop ), "",
+			        _pOpen & "Maior receita individual: " & _b1 & _vendTop & _b0 & " com " & FORMAT( _vendTopRec, _fBRL, "pt-BR" ) &
+			        IF( ISBLANK( _vendTopAt ), "", " (" & FORMAT( _vendTopAt, _fPct, "pt-BR" ) & " da meta)" ) &
+			        IF( ISBLANK( _vendComMeta ) || _vendComMeta = 0, "", "; " & _vendAbaixo & " de " & _vendComMeta & " vendedores estão abaixo da meta" ) & "." & _pClose )
+			VAR _ctx3 =
+			    _pOpen & FORMAT( _ped, "#,##0", "pt-BR" ) & " pedidos faturados para " & FORMAT( _cli, "#,##0", "pt-BR" ) & " clientes, ticket médio de " & _b1 & FORMAT( _tk, _fBRL, "pt-BR" ) & _b0 &
+			    ", margem bruta de " & _b1 & FORMAT( _mg, _fPct, "pt-BR" ) & _b0 & " e cancelamento de " & FORMAT( _canc, _fPct, "pt-BR" ) & " dos pedidos." & _pClose
+			
+			-- 3. Pontos de atenção (só quando há base)
+			VAR _at1 =
+			    IF( ISBLANK( _vendPior ) || _vendPiorAt >= 1, "",
+			        "<li>Menor atingimento: " & _b1 & _vendPior & _b0 & " com " & FORMAT( _vendPiorAt, _fPct, "pt-BR" ) & " da meta.</li>" )
+			VAR _at2 =
+			    IF( ISBLANK( _regPior ) || _regPiorVar >= 0, "",
+			        "<li>Maior queda anual: região " & _b1 & _regPior & _b0 & " com " & FORMAT( _regPiorVar, _fVar, "pt-BR" ) & " frente ao ano anterior.</li>" )
+			VAR _at3 =
+			    IF( ISBLANK( _canc ), "",
+			        "<li>Cancelamentos: " & FORMAT( [Pedidos Cancelados], "#,##0", "pt-BR" ) & " pedidos (" & FORMAT( _canc, _fPct, "pt-BR" ) & "), equivalentes a " &
+			        FORMAT( CALCULATE( SUMX( fato_vendas, fato_vendas[Quantidade] * fato_vendas[PrecoUnitario] * ( 1 - fato_vendas[DescontoPct] ) ), fato_vendas[Status] = "Cancelado" ), _fBRL, "pt-BR" ) & " não faturados.</li>" )
+			VAR _atencao =
+			    IF( _at1 = "" && _at2 = "" && _at3 = "", "",
+			        _h & "PONTOS DE ATENÇÃO</div><ul style='margin:0;padding-left:20px;'>" & _at1 & _at2 & _at3 & "</ul>" )
+			
+			-- 4. Próximos passos (derivados dos números; responsável não definido)
+			VAR _ps1 = IF( ISBLANK( _ating ) || _ating >= 1, "", "<li>Fechar o gap de " & FORMAT( ABS( _gap ), _fBRL, "pt-BR" ) & " para a meta do período.</li>" )
+			VAR _ps2 = IF( ISBLANK( _vendPior ) || _vendPiorAt >= 1, "", "<li>Revisar o plano de " & _vendPior & " e dos demais vendedores abaixo da meta.</li>" )
+			VAR _ps3 = IF( ISBLANK( _regPior ) || _regPiorVar >= 0, "", "<li>Investigar a causa da queda na região " & _regPior & ".</li>" )
+			VAR _passos =
+			    IF( _ps1 = "" && _ps2 = "" && _ps3 = "", "",
+			        _h & "PRÓXIMOS PASSOS</div><ul style='margin:0;padding-left:20px;'>" & _ps1 & _ps2 & _ps3 & "</ul>" &
+			        "<div style='color:" & _cSec & ";font-size:12pt;margin-top:8px;'>Responsável e prazo: não definidos.</div>" )
+			
+			RETURN
+			    IF( ISBLANK( _rec ),
+			        "<div style='font-family:Segoe UI,Segoe,sans-serif;background:" & _cCard & ";border-radius:8px;padding:24px;color:" & _cText & ";font-size:14pt;'>Sem dados para os filtros atuais</div>",
+			        "<div style='font-family:Segoe UI,Segoe,sans-serif;background:" & _cCard & ";border-radius:8px;padding:24px;color:" & _cText & ";font-size:14pt;line-height:1.5;'>" &
+			        "<div style='color:" & _cSec & ";font-size:12pt;margin-bottom:8px;'>Resumo executivo · " & _periodo & "</div>" &
+			        _insight &
+			        _h & "CONTEXTO</div>" & _ctx1 & _ctx2 & _ctx3 &
+			        _atencao &
+			        _passos &
+			        "</div>" )
+		displayFolder: 4. HTML
+		lineageTag: 66246ee6-9373-480b-8c5d-0e355af628e2
+
+	/// Versão curta da narrativa para a diretoria (visual HTML Content): só o cabeçalho com período e o insight principal em uma frase — receita, atingimento da meta com gap/folga e variação frente ao mesmo período do ano anterior. Sem contexto, pontos de atenção ou próximos passos (ver HTML Narrativa Visão Geral). Tokens do DESING.md; partes somem quando falta base.
+	measure 'HTML Insight Visão Geral' =
+			-- Tokens (DESING.md)
+			VAR _cCard = "#11162D"
+			VAR _cText = "#F5F7FF"
+			VAR _cSec  = "#BFC8E2"
+			VAR _cFav  = "#50D6B2"
+			VAR _cDes  = "#FF7D92"
+			
+			-- Formatos
+			VAR _fBRL = "R$ #,##0"
+			VAR _fPct = "0.0%"
+			VAR _fVar = "+0.0%;-0.0%;0.0%"
+			
+			-- KPIs do contexto
+			VAR _rec    = [Receita]
+			VAR _varRec = [Receita Var. Anual %]
+			VAR _meta   = [Meta]
+			VAR _ating  = [Atingimento %]
+			VAR _gap    = [Gap Meta]
+			VAR _d1 = CALCULATE( MIN( fato_vendas[Data] ), fato_vendas[Status] = "Faturado" )
+			VAR _d2 = CALCULATE( MAX( fato_vendas[Data] ), fato_vendas[Status] = "Faturado" )
+			VAR _periodo = FORMAT( _d1, "dd/MM/yyyy" ) & " a " & FORMAT( _d2, "dd/MM/yyyy" )
+			
+			-- Insight principal
+			VAR _corAting = SWITCH( TRUE(), ISBLANK( _ating ), _cSec, _ating >= 1, _cFav, _cDes )
+			VAR _fraseMeta =
+			    IF( ISBLANK( _meta ), "sem meta definida para o período",
+			        "<span style='color:" & _corAting & ";font-weight:600;'>" & FORMAT( _ating, _fPct, "pt-BR" ) & " da meta</span> de " & FORMAT( _meta, _fBRL, "pt-BR" ) &
+			        " (" & IF( _gap >= 0, "folga", "gap" ) & " de " & FORMAT( ABS( _gap ), _fBRL, "pt-BR" ) & ")" )
+			VAR _fraseVar =
+			    IF( ISBLANK( _varRec ), "",
+			        " e <span style='color:" & IF( _varRec >= 0, _cFav, _cDes ) & ";font-weight:600;'>" & FORMAT( _varRec, _fVar, "pt-BR" ) & "</span> frente ao mesmo período do ano anterior" )
+			
+			RETURN
+			    IF( ISBLANK( _rec ),
+			        "<div style='font-family:Segoe UI,Segoe,sans-serif;background:" & _cCard & ";border-radius:8px;padding:24px;color:" & _cText & ";font-size:14pt;'>Sem dados para os filtros atuais</div>",
+			        "<div style='font-family:Segoe UI,Segoe,sans-serif;background:" & _cCard & ";border-radius:8px;padding:24px;color:" & _cText & ";'>" &
+			        "<div style='color:" & _cSec & ";font-size:12pt;margin-bottom:8px;'>Resumo executivo · " & _periodo & "</div>" &
+			        "<div style='color:" & _cText & ";font-size:20pt;font-weight:600;line-height:1.3;'>" &
+			        "Receita de " & FORMAT( _rec, _fBRL, "pt-BR" ) & ", " & _fraseMeta & _fraseVar & "." &
+			        "</div></div>" )
+		displayFolder: 4. HTML
+		lineageTag: 04ee43e1-8b62-466a-8d42-a62112e68e0d
+
 	column 'Coluna 1'
 		dataType: string
 		isHidden

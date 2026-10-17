@@ -1,18 +1,19 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
-  "name": "6e6da5d366fe8e369ec4",
+  "name": "a4105a75e62cddc9a22f",
   "position": {
-    "x": 1292.5984251968503,
-    "y": 872.31496062992119,
-    "z": 0,
-    "height": 146.14173228346456,
-    "width": 314.45669291338584
+    "x": 43.84251968503937,
+    "y": 464.12598425196848,
+    "z": 10,
+    "height": 126.99212598425196,
+    "width": 1847.4330708661416,
+    "tabOrder": 10
   },
   "visual": {
-    "visualType": "cardVisual",
+    "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6865",
     "query": {
       "queryState": {
-        "Data": {
+        "content": {
           "projections": [
             {
               "field": {
@@ -22,18 +23,33 @@
                       "Entity": "Medidas"
                     }
                   },
-                  "Property": "txtAtualizacao"
+                  "Property": "HTML Insight Visão Geral"
                 }
               },
-              "queryRef": "Medidas.txtAtualizacao",
-              "nativeQueryRef": "txtAtualizacao"
+              "queryRef": "Medidas.HTML Insight Visão Geral",
+              "nativeQueryRef": "HTML Insight Visão Geral"
             }
           ]
         }
       }
     },
     "objects": {
-      "label": [
+      "compatibility": [
+        {
+          "properties": {
+            "legacyRendering": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
         {
           "properties": {
             "show": {
@@ -43,39 +59,32 @@
                 }
               }
             }
-          },
-          "selector": {
-            "id": "default"
           }
         }
       ],
-      "value": [
+      "background": [
         {
           "properties": {
-            "fontSize": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
-                }
-              }
-            },
-            "textWrap": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "horizontalAlignment": {
-              "expr": {
-                "Literal": {
-                  "Value": "'center'"
+                  "Value": "false"
                 }
               }
             }
-          },
-          "selector": {
-            "id": "default"
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
           }
         }
       ]
